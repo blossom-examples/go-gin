@@ -6,7 +6,7 @@ A ready-to-deploy Go Gin app to get you started quickly on [Blossom](https://blo
 
 ```bash
 # Install dependencies
-go mod download
+go mod tidy
 
 # Run the app
 go run main.go

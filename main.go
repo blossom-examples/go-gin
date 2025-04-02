@@ -16,9 +16,6 @@ func main() {
 	// Create router
 	r := gin.Default()
 
-	// Serve static files
-	r.Static("/", "./public")
-
 	// API routes
 	api := r.Group("/api")
 	{
@@ -45,6 +42,14 @@ func main() {
 		})
 	}
 
+	// Serve index.html for root path
+	r.GET("/", func(c *gin.Context) {
+		c.File("public/index.html")
+	})
+
+	// Serve other static files
+	r.Static("/static", "./public")
+
 	// Get port from environment variable or use default
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -52,7 +57,14 @@ func main() {
 	}
 
 	// Start server
-	fmt.Printf("Server is running on port %s\n", port)
-	fmt.Printf("Visit http://localhost:%s to see the demo\n", port)
-	r.Run(":" + port)
+	fmt.Printf("Starting server...\n")
+	fmt.Printf("- Environment: %s\n", gin.Mode())
+	fmt.Printf("- Port: %s\n", port)
+	fmt.Printf("- URL: http://localhost:%s\n", port)
+	fmt.Printf("\nReady! Visit http://localhost:%s to see the demo\n", port)
+
+	if err := r.Run(":" + port); err != nil {
+		fmt.Printf("Error starting server: %v\n", err)
+		os.Exit(1)
+	}
 }
